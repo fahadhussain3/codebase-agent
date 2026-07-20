@@ -1,0 +1,7 @@
+chromadb
+cohere
+networkx
+gitpython
+python-dotenv
+click
+streamlit
