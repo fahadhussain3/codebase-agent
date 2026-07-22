@@ -1,0 +1,65 @@
+[
+  {
+    "id": 1,
+    "question": "How does the app notify users when their trial is ending?",
+    "expected_functions": ["notify_trial_end", "send_trial_end_soon_email"],
+    "expected_files": ["cron.py", "email_utils.py"]
+  },
+  {
+    "id": 2,
+    "question": "What functions call send_trial_end_soon_email?",
+    "expected_functions": ["notify_trial_end"],
+    "expected_files": ["cron.py"]
+  },
+  {
+    "id": 3,
+    "question": "How does the app notify users when their premium subscription is ending?",
+    "expected_functions": ["notify_premium_end"],
+    "expected_files": ["cron.py"]
+  },
+  {
+    "id": 4,
+    "question": "How can an admin manually extend a user's trial?",
+    "expected_functions": ["extend_trial_1w"],
+    "expected_files": ["user.py"]
+  },
+  {
+    "id": 5,
+    "question": "How can an admin stop a user's trial?",
+    "expected_functions": ["stop_trial"],
+    "expected_files": ["user.py"]
+  },
+  {
+    "id": 6,
+    "question": "How does the app authenticate API requests?",
+    "expected_functions": ["authorize_request"],
+    "expected_files": ["base.py"]
+  },
+  {
+    "id": 7,
+    "question": "What is sudo mode and how does the app check if it is currently active for a request?",
+    "expected_functions": [
+      "check_sudo_mode_is_active",
+      "check_session_sudo_mode_is_active"
+    ],
+    "expected_files": ["base.py"]
+  },
+  {
+    "id": 8,
+    "question": "What happens when an API request is made without a valid API key or session?",
+    "expected_functions": ["authorize_request"],
+    "expected_files": ["base.py"]
+  },
+  {
+    "id": 9,
+    "question": "How does the app search for custom domains by user email, domain ID, or regex?",
+    "expected_functions": ["search"],
+    "expected_files": ["custom_domain_search.py"]
+  },
+  {
+    "id": 10,
+    "question": "What happens when an admin deletes a custom domain?",
+    "expected_functions": ["delete_custom_domain"],
+    "expected_files": ["custom_domain_search.py"]
+  }
+]

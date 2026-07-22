@@ -1,9 +1,14 @@
 import os
 from dotenv import load_dotenv
 
-load_dotenv()  
+load_dotenv()
 
-COHERE_API_KEY = os.getenv("COHERE_API_KEY")
+try:
+    import streamlit as st
+    COHERE_API_KEY = st.secrets.get("COHERE_API_KEY", os.getenv("COHERE_API_KEY"))
+except (ImportError, FileNotFoundError):
+    COHERE_API_KEY = os.getenv("COHERE_API_KEY")
+
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 
 STORAGE_DIR = "storage"

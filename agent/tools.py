@@ -34,21 +34,30 @@ def search_code(query, n_results=5):
 
 def get_callers(function_name, graph):
     """
-    Graph lookup: what functions call this one?
+    Graph lookup: what functions call this one, with file locations.
     """
     if function_name not in graph:
         return f"'{function_name}' not found in the codebase graph."
-    return list(graph.predecessors(function_name))
+
+    callers = list(graph.predecessors(function_name))
+    return [
+        {"name": name, "filepath": graph.nodes[name].get("filepath", "unknown")}
+        for name in callers
+    ]
 
 
 def get_callees(function_name, graph):
     """
-    Graph lookup: what functions does this one call?
+    Graph lookup: what functions this one calls, with file locations.
     """
     if function_name not in graph:
         return f"'{function_name}' not found in the codebase graph."
-    return list(graph.successors(function_name))
 
+    callees = list(graph.successors(function_name))
+    return [
+        {"name": name, "filepath": graph.nodes[name].get("filepath", "unknown")}
+        for name in callees
+    ]
 
 TOOL_DEFINITIONS = [
     {
