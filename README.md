@@ -50,7 +50,9 @@ Everything runs locally and for free — no paid infrastructure, no hosted datab
 
 ## Try it
 
-**Web demo:** [link once deployed]
+**Web demo:** https://your-actual-url.streamlit.app
+
+Note: the hosted demo starts empty — paste any public GitHub repo URL into the sidebar and click "Index Repo" first (takes a few minutes for a small-to-medium repo), then ask away.
 
 **Run it yourself:**
 
