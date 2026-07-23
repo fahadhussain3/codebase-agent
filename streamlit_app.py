@@ -22,24 +22,27 @@ with st.sidebar:
     index_button = st.button("Index Repo")
 
     if index_button and repo_url:
-        with st.spinner("Cloning repository..."):
-            local_path = clone_repo(repo_url)
+        try:
+            with st.spinner("Cloning repository..."):
+                local_path = clone_repo(repo_url)
 
-        with st.spinner("Parsing codebase..."):
-            units = parse_repo(local_path)
-            st.write(f"Found {len(units)} functions/classes.")
+            with st.spinner("Parsing codebase..."):
+                units = parse_repo(local_path)
+                st.write(f"Found {len(units)} functions/classes.")
 
-        with st.spinner("Building call graph..."):
-            graph = build_call_graph(units)
+            with st.spinner("Building call graph..."):
+                graph = build_call_graph(units)
 
-        with st.spinner("Chunking and embedding (this may take a few minutes)..."):
-            chunked = chunk_units(units)
-            embedded = embed_chunks(chunked)
-            store_chunks(embedded)
+            with st.spinner("Chunking and embedding (this may take a few minutes)..."):
+                chunked = chunk_units(units)
+                embedded = embed_chunks(chunked)
+                store_chunks(embedded)
 
-        st.session_state.graph = graph
-        st.session_state.indexed_repo = repo_url
-        st.success("Repo indexed! You can now ask questions.")
+            st.session_state.graph = graph
+            st.session_state.indexed_repo = repo_url
+            st.success("Repo indexed! You can now ask questions.")
+        except Exception as e:
+            st.error(f"Indexing failed: {e}")
 
     if st.session_state.indexed_repo:
         st.info(f"Currently indexed:\n{st.session_state.indexed_repo}")
@@ -50,11 +53,14 @@ if st.session_state.graph is None:
     st.warning("Index a repo first using the sidebar, or reuse an already-indexed one below.")
 
     if st.button("Use already-indexed SimpleLogin repo"):
-        with st.spinner("Loading existing index..."):
-            units = parse_repo(r"storage/cloned_repos/app")
-            st.session_state.graph = build_call_graph(units)
-            st.session_state.indexed_repo = "https://github.com/simple-login/app.git"
-        st.rerun()
+        try:
+            with st.spinner("Loading existing index..."):
+                units = parse_repo(r"storage/cloned_repos/app")
+                st.session_state.graph = build_call_graph(units)
+                st.session_state.indexed_repo = "https://github.com/simple-login/app.git"
+            st.rerun()
+        except Exception as e:
+            st.error(f"Failed to load existing index: {e}")
 
 question = st.text_input("Your question", placeholder="How does the app authenticate API requests?")
 ask_button = st.button("Ask")
@@ -63,7 +69,10 @@ if ask_button and question:
     if st.session_state.graph is None:
         st.error("Please index a repo first.")
     else:
-        with st.spinner("Thinking..."):
-            answer = run_agent(question, st.session_state.graph)
-        st.markdown("### Answer")
-        st.markdown(answer)
+        try:
+            with st.spinner("Thinking..."):
+                answer = run_agent(question, st.session_state.graph)
+            st.markdown("### Answer")
+            st.markdown(answer)
+        except Exception as e:
+            st.error(f"Something went wrong: {e}")
