@@ -50,17 +50,7 @@ with st.sidebar:
 st.header("Ask a Question")
 
 if st.session_state.graph is None:
-    st.warning("Index a repo first using the sidebar, or reuse an already-indexed one below.")
-
-    if st.button("Use already-indexed SimpleLogin repo"):
-        try:
-            with st.spinner("Loading existing index..."):
-                units = parse_repo(r"storage/cloned_repos/app")
-                st.session_state.graph = build_call_graph(units)
-                st.session_state.indexed_repo = "https://github.com/simple-login/app.git"
-            st.rerun()
-        except Exception as e:
-            st.error(f"Failed to load existing index: {e}")
+    st.warning("Index a repo first using the sidebar to get started.")
 
 question = st.text_input("Your question", placeholder="How does the app authenticate API requests?")
 ask_button = st.button("Ask")
